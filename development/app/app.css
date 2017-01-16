@@ -1,0 +1,85 @@
+s
+
+
+/* Szablon *************************************/
+
+
+/* Small */
+@media (max-width:360px)
+{
+
+}
+
+/* Medium */
+@media (min-width:361px) AND (max-width: 720px) 
+{
+   
+}
+
+/* Large */
+@media (min-width:721px)
+{
+  
+}
+
+/**********************************************/
+
+.center { margin-left: auto;
+          margin-right: auto; 
+          text-align: center; }
+.vcenter {
+    display: table-cell;
+    align-items: center;
+    vertical-align: middle;
+}
+html,body .full_size #mainPanel { height: 100%; }
+.body
+{
+  background-color: #656363; 
+  position: relative;
+}
+.fill { 
+    min-height: 100%;
+    height: 100%;
+}
+/*#mainPanel
+{
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%);
+}*/
+
+.panel
+{
+  background-color: #FFFFFF;
+}
+/*font-weight 400 is the same as normal, and 700 is the same as bold */
+/*@font-face {
+    font-family: "SohoGothicPro";
+    src: url("./assets/fonts/Monotype - Soho Gothic Pro Regular.ttf");
+    font-weight: 400; /* Normal 
+}*/
+
+/*  Obrazy- logo, ikomy menu, etc..  */
+/*.logoImg
+{
+  content:url("./assets/images/logo.png");
+}*/
+
+
+/* Disable text selection (make read-only)*/
+.noselect {
+  cursor:default;
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+.cursorpointer          /*hand cursor for buttons and other clickable stuff   */
+{
+  cursor:pointer;
+}

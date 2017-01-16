@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <title>K</title>
+  <meta name="description" content="Communication">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Angular2 K">
+  <meta name="keywords" content="IM">
+  <meta name="author" content="Mateusz Redel">
+  <meta name="application-name" content="K">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  <base href="/">
+  
+  <script>
+  /*
+  window.progressBar - Object
+  window.progressBar.barElement - DOM Element ref
+  window.progressBar.setProgress - function(progress)  => progress = { key:{ weight,progress,script}   }
+  window.loadScript - function(fileName,onProgress(progress),onFinish(script))
+  
+  */
+	  function createXHR() 
+	  {
+		try {
+			return new XMLHttpRequest();
+		} catch (e) {
+			try {
+				return new ActiveXObject("Microsoft.XMLHTTP");
+			} catch (e) {
+				return new ActiveXObject("Msxml2.XMLHTTP");
+			}
+		}
+	  }
+	
+	window.progressBar={setProgress:null,barElement:null};
+	window.progressBar.progress=0;
+	window.timerId=0;
+	
+	window.progressBar.setProgress=function(progress)
+	{
+		if(window.progressBar.barElement==null)
+		{
+			window.progressBar.barElement = document.getElementById("myBar"); 
+		}
+		var totalProgress=0;
+		for(key in progress)
+		{
+			var ob=progress[key];
+			totalProgress+=ob.weight*ob.progress;
+		}
+		
+		// FIX WHEN USING TRANSFORM SCALE(2,1)
+		totalProgress*=0.655;
+		window.progressBar.progress=totalProgress;
+		
+		window.progressBar.barElement.setAttribute('style',"width:"+window.progressBar.progress+"%;");
+		window.progressBar.barElement.offsetHeight;	
+	}
+	
+   window.loadScript= function(fileName,fileSize,onProgress,onFinish)
+   {
+		var contentLenghth=fileSize;
+		var req=new createXHR();
+		var progressFun=function (evt) 
+		{
+			if (evt.lengthComputable) 
+			{
+				var percentComplete = evt.loaded / evt.total;
+				onProgress(percentComplete);
+
+			}else
+			{
+				var percentComplete = evt.loaded / contentLenghth;
+				onProgress(percentComplete);
+			}
+		}
+
+		req.onreadystatechange = function() 
+		 {
+			if (this.readyState == 4 && this.status == 200) 
+			{
+				// Detach handlers
+				req.onreadystatechange=null;
+				req.removeEventListener("progress",progressFun);
+				
+				//Execute script
+				onFinish(req.responseText);
+			}
+		};
+		
+		 req.addEventListener("progress",progressFun , false);
+		 
+		 req.open("GET", fileName, true);
+		 req.send();
+		
+   };
+  </script>
+  
+  </head>
+<style>
+#myProgress {
+	margin-top:1%;
+	margin-left:33%;
+    width: 30.03%;
+    height: 30px;
+	padding:0.2em;
+    background-color: #dbdbdb;
+	box-sizing: content-box;
+	
+	transform: translateZ(0) scaleX(1.665);
+    -webkit-transform: translateZ(0) scaleX(1.665);
+    -ms-transform: translateZ(0) scaleX(1.665);
+}
+
+#myBar {
+   
+    width: 0%;
+    height: 101%;
+    background-color: gray;
+	
+	
+	/* Enable GPU acceleration */
+	 -webkit-transform: translateZ(0) scale(1);
+   -moz-transform: translateZ(0) scale(1);
+   -ms-transform: translateZ(0) scale(1);
+   -o-transform: translateZ(0) scale(1);
+   transform: translateZ(0) scale(1);
+	
+	/* Animation name */
+	
+	animation-name: progress;
+	-webkit-animation-name: progress;
+	-moz-animation-name: progress;
+	-o-animation-name: progress;
+	
+	/* Animation iteration */
+	
+	animation-iteration-count: 1;
+	-webkit-animation-iteration-count: 1;
+	-moz-animation-iteration-count: 1;
+	-o-animation-iteration-count: 1;
+	
+	/* Animation timing function */
+	animation-timing-function: linear;
+	-webkit-animation-timing-function: linear;
+	-moz-animation-timing-function: linear;
+	-o-animation-timing-function: linear;
+	
+	/*Animation fill mode */
+	
+	animation-fill-mode: forwards;
+	-webkit-animation-fill-mode: forwards;
+	-moz-animation-fill-mode: forwards;
+	-o-animation-fill-mode: forwards;
+	
+	/* Animation play state */
+	
+	animation-play-state: paused;
+	-webkit-animation-play-state: paused; /* Chrome, Safari, Opera */
+	-moz-animation-play-state: paused;
+	-o-animation-play-state: paused;
+	
+	 /* Set transform origin to bottom left corner */
+	 
+	transform-origin:0;
+	-webkit-transform-origin:0;
+	-ms-transform-origin:0;
+	-moz-transform-origin:0;
+	-o-transform-origin:0;
+
+
+}
+
+
+.animate
+{
+	-webkit-animation-play-state: running !important; /* Chrome, Safari, Opera */
+    animation-play-state: running !important;
+}
+
+
+@keyframes progress 
+{
+    from  
+	{
+		-webkit-transform: scaleX(1);
+		
+	}
+    to  
+	{
+		-webkit-transform: scaleX(1.665);
+		
+	}
+	
+}
+
+.sk-cube-grid {
+  width: 100px;
+  height: 100px;
+  margin: 0px auto;
+  /*
+   * Spinner positions
+   * 1 2 3
+   * 4 5 6
+   * 7 8 9
+   */ 
+   }
+   
+  .sk-cube-grid .sk-cube 
+  {
+    width: 33.33%;
+    height: 33.33%;
+    background-color: #585858;
+    float: left;
+    -webkit-animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out;
+    animation: sk-cubeGridScaleDelay 1.3s infinite ease-in-out; 
+	
+	/* FIX FOR FLICKERING */
+	 -webkit-backface-visibility: hidden;
+   -moz-backface-visibility: hidden;
+   -ms-backface-visibility: hidden;
+   backface-visibility: hidden;
+
+   -webkit-perspective: 1000;
+   -moz-perspective: 1000;
+   -ms-perspective: 1000;
+   perspective: 1000;
+  }
+  .sk-cube-grid .sk-cube1 {
+    -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s; }
+  .sk-cube-grid .sk-cube2 {
+    -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s; }
+  .sk-cube-grid .sk-cube3 {
+    -webkit-animation-delay: 0.4s;
+            animation-delay: 0.4s; }
+  .sk-cube-grid .sk-cube4 {
+    -webkit-animation-delay: 0.1s;
+            animation-delay: 0.1s; }
+  .sk-cube-grid .sk-cube5 {
+    -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s; }
+  .sk-cube-grid .sk-cube6 {
+    -webkit-animation-delay: 0.3s;
+            animation-delay: 0.3s; }
+  .sk-cube-grid .sk-cube7 {
+    -webkit-animation-delay: 0.0s;
+            animation-delay: 0.0s; }
+  .sk-cube-grid .sk-cube8 {
+    -webkit-animation-delay: 0.1s;
+            animation-delay: 0.1s; }
+  .sk-cube-grid .sk-cube9 {
+    -webkit-animation-delay: 0.2s;
+            animation-delay: 0.2s; }
+@-webkit-keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1); }
+  35% {
+    -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1); } }
+@keyframes sk-cubeGridScaleDelay {
+  0%, 70%, 100% {
+    -webkit-transform: scale3D(1, 1, 1);
+            transform: scale3D(1, 1, 1); }
+  35% {
+    -webkit-transform: scale3D(0, 0, 1);
+            transform: scale3D(0, 0, 1); } }
+</style>
+
+  <body class="body" style="height: 100%">
+    <app>
+	
+				 <div style="width:100%;height:100%;font-size:14px;line-height:1.42857143px">
+					  <div class="spiner-example" style="position:fixed;top:35%;left:0;right:0;bottom:0;">
+						<!--<div class="sk-cube-grid">
+						  <div class="sk-cube sk-cube1"></div>
+						  <div class="sk-cube sk-cube2"></div>
+						  <div class="sk-cube sk-cube3"></div>
+						  <div class="sk-cube sk-cube4"></div>
+						  <div class="sk-cube sk-cube5"></div>
+						  <div class="sk-cube sk-cube6"></div>
+						  <div class="sk-cube sk-cube7"></div>
+						  <div class="sk-cube sk-cube8"></div>
+						  <div class="sk-cube sk-cube9"></div>
+						</div> -->
+						<br><br><br>
+						<div id="myProgress" style="display:none">
+						  <div id="myBar"></div>
+						</div>
+					 </div>
+				</div>
+					
+				  
+    </app>
+	
+	
+  <script>
+   var app="build/app.js";
+   var appJsSize=5931369;
+   
+   var vendor="build/vendor.bundle.js";
+   var vendorSize=690404;
+   
+   var css="app.css";
+   var appCssSize=4256783;
+   
+   /*
+   For debug is:
+   var app="build/app.js";
+   var vendor="build/vendor.bundle.js";
+   var css="build/app.css";
+   */
+   
+   
+   window.progressBar.progressList={};
+   window.progressBar.progressList[vendor]={weight:10,progress:0,script:null};
+   window.progressBar.progressList[app]={weight:25,progress:0,script:null};
+   window.progressBar.progressList[css]={weight:25,progress:0,script:null};
+   window.progressBar.progressList["loading"]={weight:40,progress:0};
+
+   function afterDownload()
+   {
+		if(window.progressBar.progressList[app].progress==1 && 
+           window.progressBar.progressList[vendor].progress==1 && 
+           window.progressBar.progressList[css].progress==1)
+			{
+				
+				// Calculate loading time based on eval
+				var start=performance.now();
+				eval(window.progressBar.progressList[vendor].script);
+				var stop=performance.now()-start;
+				
+				
+				// Set interval 
+				var interval=5;
+				if(stop<400)
+				{
+						//alert('Desktop');
+						interval=6.2;
+				}else if(stop>400 && stop<1000)
+						{
+						    //alert('ipad');
+							interval=9.5;
+						}else if(stop>=1000)
+						{
+							//alert('archaic device :P');
+							interval=6.0;
+						}
+				var duration=(stop/250)* interval;
+
+				// Update animation duration 
+				window.progressBar.barElement.style.animationDuration =duration+"s";
+				window.progressBar.barElement.style.WebKitAnimationDuration=duration+"s";
+				
+				window.progressBar.barElement.style.width=60+"%"; // Set actual progress to 60%
+				window.progressBar.barElement.offsetHeight;
+				
+				window.progressBar.barElement.className+="animate"; // Start animation
+				window.progressBar.barElement.offsetHeight;
+				
+				setTimeout(function(){
+				eval(window.progressBar.progressList[app].script);			
+				window.progressBar.progressList[vendor].script=null;
+				window.progressBar.progressList[app].script=null;
+				},500);
+				
+			}
+   }
+		
+	loadScript(css,appCssSize,function(pr)
+   {
+		//Update progress here
+		 window.progressBar.progressList[css].progress=pr;
+		window.progressBar.setProgress(window.progressBar.progressList); // progress * 100 * 50%
+   },function(script)
+   {
+		// Load downloaded css
+		window.progressBar.progressList[css].progress=1;
+		 var head = document.getElementsByTagName("head")[0]; 
+        var styleTag = document.createElement("style"); 
+        var style = document.createTextNode(script);
+        styleTag.appendChild(style); 
+        head.appendChild(styleTag);
+		
+		afterDownload();
+		
+   });
+	
+	
+   loadScript(vendor,vendorSize,function(pr)
+   {
+		//Update progress here
+		 window.progressBar.progressList[vendor].progress=pr;
+		window.progressBar.setProgress(window.progressBar.progressList); // progress * 100 * 50%
+   },function(script)
+   {
+		window.progressBar.progressList[vendor].progress=1;
+		window.progressBar.progressList[vendor].script=script;
+		window.progressBar.setProgress(window.progressBar.progressList);
+		//Finish here
+		afterDownload();
+		
+   });
+   
+	loadScript(app,appJsSize,function(pr)
+	{
+		window.progressBar.progressList[app].progress=pr;
+		window.progressBar.setProgress(window.progressBar.progressList);
+	},function(script)
+	{
+		//Finish here
+		window.progressBar.progressList[app].progress=1;
+		window.progressBar.progressList[app].script=script;
+		window.progressBar.setProgress(window.progressBar.progressList);
+		
+		afterDownload();
+	});
+	
+	</script>
+  <!-- Angular2 files -->
+
+  <!--<script src="build/vendor.bundle.js"></script>-->
+
+  <!-- App script -->
+  <!--<script src="build/app.js"></script>-->
+  </body>
+  </html>
