@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "lib": [ "es2015", "dom" ],
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipDefaultLibCheck": true,
+    "noImplicitReturns": false,
+    "noImplicitThis": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    // Waiting for comments on https://github.com/angular/angular/pull/8902
+    "strictNullChecks": false,
+    "typeRoots": [
+        "../node_modules/@types"
+    ],
+    "types": [
+        "jquery",
+        "node"
+      
+    ]
+  },
+   "awesomeTypescriptLoaderOptions": {
+    "useWebpackText": true // Allows other loaders to be chained to awesome-typescript-loader.
+  },
+  "compileOnSave": false,
+  "buildOnSave": false,
+  "files": ["app/main.ts"]
+}
